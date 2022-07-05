@@ -3,6 +3,14 @@ variable "region" {
   default = "us-east-1"
 }
 
+variable "docker_username" {
+  type = string
+}
+
+variable "docker_password" {
+  type = string
+}
+
 variable "owner_id" {
   type = list(string)
   default = ["679593333241"]

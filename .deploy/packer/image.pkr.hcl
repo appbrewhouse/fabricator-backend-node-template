@@ -32,8 +32,8 @@ build {
 
   provisioner "shell" {
     environment_vars = [
-    "USERNAME=appbrewhouse",
-    "PASSWORD=d951dad9-4f3a-4f27-91e9-1985dd39c788"
+    "USERNAME=${var.docker_username}",
+    "PASSWORD=${var.docker_password}"
   ]
     script = "./setup.sh"
   }

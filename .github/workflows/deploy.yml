@@ -24,3 +24,17 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - run: docker build . --file ./Dockerfile --tag appbrewhouse/lodgercontrol-backend
       - run: docker push appbrewhouse/lodgercontrol-backend
+  build-ami:
+    name: Build AMI image
+    env:
+      PKR_VAR_docker_username: ${{ secrets.DOCKER_USERNAME }}
+      PKR_VAR_docker_password: ${{ secrets.DOCKER_PASSWORD }}
+    runs-on: ubuntu-latest
+    needs: build-and-push-docker-image
+    if: github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v2
+      - run: bash .deploy/scripts/packer-install.sh
+      - run: cd .deploy/packer && packer validate image.pkr.hcl
+      - name: build ami image
+        run: cd .deploy/packer && packer build image.pkr.hcl
